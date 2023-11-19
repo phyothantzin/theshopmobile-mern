@@ -6,17 +6,20 @@ import Message from "../components/Message";
 
 const HomeScreen = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
+  console.log(error);
   return (
     <>
+      <h1>Latest Products</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">
-          {error?.data?.message || error.error}
+          {error?.data?.message ||
+            error.error ||
+            "Something went wrong! Please try refreshing the browser"}
         </Message>
       ) : (
         <>
-          <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
