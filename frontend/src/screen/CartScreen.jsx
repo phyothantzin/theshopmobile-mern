@@ -14,11 +14,13 @@ import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../slices/cartSlice";
 
 const CartScreen = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const addToCartHandler = async (item, newQuantity) => {
-    dispatch(addToCart({ ...item, quantity: newQuantity }));
+    dispatch(addToCart({ ...item, user: userInfo._id, quantity: newQuantity }));
   };
 
   const removeFromCartHandler = async (id) => {
@@ -41,48 +43,54 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems.map((item) => (
-              <ListGroup.Item key={item._id}>
-                <Row>
-                  <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
-                  </Col>
-                  <Col md={3}>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      to={`/product/${item._id}`}
-                    >
-                      {item.name}
-                    </Link>
-                  </Col>
-                  <Col md={2}>${item.price}</Col>
-                  <Col md={2}>
-                    <Form.Control
-                      as="select"
-                      value={item.quantity}
-                      onChange={(e) => {
-                        addToCartHandler(item, Number(e.target.value));
-                      }}
-                    >
-                      {[...Array(item.countInStock).keys()].map((k) => (
-                        <option key={k + 1} value={k + 1}>
-                          {k + 1}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Col>
-                  <Col md={2}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => removeFromCartHandler(item._id)}
-                    >
-                      <FaTrash />
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
+            {cartItems.map((item) =>
+              item.user.toString() === userInfo?._id.toString() ? (
+                <ListGroup.Item key={item._id}>
+                  <Row>
+                    <Col md={2}>
+                      <Image src={item.image} alt={item.name} fluid rounded />
+                    </Col>
+                    <Col md={3}>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        to={`/product/${item._id}`}
+                      >
+                        {item.name}
+                      </Link>
+                    </Col>
+                    <Col md={2}>${item.price}</Col>
+                    <Col md={2}>
+                      <Form.Control
+                        as="select"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          addToCartHandler(item, Number(e.target.value));
+                        }}
+                      >
+                        {[...Array(item.countInStock).keys()].map((k) => (
+                          <option key={k + 1} value={k + 1}>
+                            {k + 1}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Col>
+                    <Col md={2}>
+                      <Button
+                        type="button"
+                        variant="light"
+                        onClick={() => removeFromCartHandler(item._id)}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ) : (
+                <Message>
+                  Your cart is empty <Link to="/">Go Back</Link>
+                </Message>
+              )
+            )}
           </ListGroup>
         )}
       </Col>

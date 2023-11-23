@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
 import App from "./App.jsx";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import HomeScreen from "./screen/HomeScreen";
 import ProductScreen from "./screen/ProductScreen.jsx";
@@ -28,11 +29,19 @@ import ProfileScreen from "./screen/ProfileScreen.jsx";
 import OrderListScreen from "./screen/admin/OrderListScreen.jsx";
 import ProductListScreen from "./screen/admin/ProductListScreen.jsx";
 import ProductEditScreen from "./screen/admin/ProductEditScreen.jsx";
+import UserListScreen from "./screen/admin/UserListScreen.jsx";
+import UserEditScreen from "./screen/admin/UserEditScreen.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomeScreen />} />
+      <Route path="/search/:keyword" element={<HomeScreen />} />
+      <Route path="/page/:pageNumber" element={<HomeScreen />} />
+      <Route
+        path="/search/:keyword/page/:pageNumber"
+        element={<HomeScreen />}
+      />
       <Route path="/product/:id" element={<ProductScreen />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
@@ -50,9 +59,15 @@ const router = createBrowserRouter(
         <Route path="/admin/orders" element={<OrderListScreen />} />
         <Route path="/admin/products" element={<ProductListScreen />} />
         <Route
+          path="/admin/products/:pageNumber"
+          element={<ProductListScreen />}
+        />
+        <Route
           path="/admin/products/:id/edit"
           element={<ProductEditScreen />}
         />
+        <Route path="/admin/users" element={<UserListScreen />} />
+        <Route path="/admin/users/:id/edit" element={<UserEditScreen />} />
       </Route>
     </Route>
   )
@@ -60,10 +75,12 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PayPalScriptProvider deferLoading={true}>
-        <RouterProvider router={router} />
-      </PayPalScriptProvider>
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <PayPalScriptProvider deferLoading={true}>
+          <RouterProvider router={router} />
+        </PayPalScriptProvider>
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
