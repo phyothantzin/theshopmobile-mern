@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { toast } from "react-toastify";
-import Message from "../components/Message";
-import { usePlaceOrderMutation } from "../slices/ordersApiSlice";
-import { clearCartItems } from "../slices/cartSlice";
-import CheckoutSteps from "../components/CheckoutSteps";
-import Loader from "../components/Loader";
+import Message from "../../components/Message";
+import { usePlaceOrderMutation } from "../../slices/ordersApiSlice";
+import { clearCartItems } from "../../slices/cartSlice";
+import CheckoutSteps from "../../components/CheckoutSteps";
+import Loader from "../../components/Loader";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();

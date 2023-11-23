@@ -24,6 +24,11 @@ const Header = () => {
       console.error(err);
     }
   };
+
+  const cartQuantity = cartItems.filter(
+    (item) => item.addedBy.toString() === userInfo?._id.toString()
+  ).length;
+
   return (
     <header>
       <Navbar bg="primary" variant="dark" expand="md" collapseOnSelect>
@@ -41,9 +46,9 @@ const Header = () => {
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <FaShoppingCart /> Cart
-                  {cartItems.length > 0 && (
+                  {cartQuantity > 0 && (
                     <Badge pill bg="success" style={{ marginLeft: "5px" }}>
-                      {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                      {cartQuantity}
                     </Badge>
                   )}
                 </Nav.Link>
