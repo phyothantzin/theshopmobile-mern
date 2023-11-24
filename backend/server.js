@@ -9,7 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import cookieParser from "cookie-parser";
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 
 connectDB(); // Connect to MongoDB
 
