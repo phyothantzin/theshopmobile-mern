@@ -52,18 +52,22 @@ const ProductScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      if (comment && rating) {
-        await createReview({ productId, rating, comment }).unwrap();
-        refetch();
-        setRating(0);
-        setComment("");
-        toast.success("Review submitted successfully");
-      } else {
-        toast.error("Please enter comment and rating");
+    if (userInfo.isAdmin === false) {
+      try {
+        if (comment && rating) {
+          await createReview({ productId, rating, comment }).unwrap();
+          refetch();
+          setRating(0);
+          setComment("");
+          toast.success("Review submitted successfully");
+        } else {
+          toast.error("Please enter comment and rating");
+        }
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
       }
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
+    } else {
+      toast.error("Admins cannot review the product");
     }
   };
 
