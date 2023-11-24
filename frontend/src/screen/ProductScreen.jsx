@@ -44,6 +44,9 @@ const ProductScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const addToCartHandler = () => {
+    if (!userInfo) {
+      navigate("/login?redirect=/product/" + productId);
+    }
     dispatch(addToCart({ ...product, addedBy: userInfo._id, quantity: qty }));
     navigate("/cart");
     console.log(localStorage.getItem("cart"));
